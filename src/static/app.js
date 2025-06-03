@@ -4,6 +4,66 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
+  // Theme management
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeDropdown = document.getElementById("theme-dropdown");
+  const themeIcon = document.querySelector(".theme-icon");
+  const themeText = document.querySelector(".theme-text");
+
+  let currentTheme = localStorage.getItem("theme") || "system";
+  setTheme(currentTheme);
+
+  if (themeToggle) {
+    themeToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      themeDropdown.classList.toggle("hidden");
+    });
+  }
+  document.addEventListener("click", () => {
+    if (themeDropdown) themeDropdown.classList.add("hidden");
+  });
+  if (themeDropdown) {
+    themeDropdown.addEventListener("click", (e) => {
+      if (e.target.hasAttribute("data-theme")) {
+        const selectedTheme = e.target.getAttribute("data-theme");
+        setTheme(selectedTheme);
+        themeDropdown.classList.add("hidden");
+      }
+    });
+  }
+  if (window.matchMedia) {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+      if (currentTheme === "system") setTheme("system");
+    });
+  }
+
+  function setTheme(theme) {
+    currentTheme = theme;
+    localStorage.setItem("theme", theme);
+    document.documentElement.removeAttribute("data-theme");
+    let actualTheme = theme;
+    if (theme === "system") {
+      actualTheme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    if (actualTheme === "light") {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+    updateThemeToggle(theme, actualTheme);
+  }
+
+  function updateThemeToggle(selectedTheme, actualTheme) {
+    const themeConfig = {
+      light: { icon: "☀️", text: "Light" },
+      dark: { icon: "🌙", text: "Dark" },
+      system: { icon: actualTheme === "dark" ? "🌙" : "☀️", text: "System" }
+    };
+    const config = themeConfig[selectedTheme];
+    if (themeIcon && themeText) {
+      themeIcon.textContent = config.icon;
+      themeText.textContent = config.text;
+    }
+  }
+
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
