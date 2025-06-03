@@ -144,9 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
         signupForm.reset();
         
         // Refresh activities to show updated participant list
-        setTimeout(() => {
-          fetchActivities();
-        }, 1000);
+        fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
