@@ -218,6 +218,7 @@ section h3 {
 .participants-list {
   margin: 12px 0 0 20px;
   padding: 0;
+  list-style: none; /* Hide bullet points */
 }
 
 .participants-list li {
@@ -226,17 +227,42 @@ section h3 {
   font-size: 14px;
   position: relative;
   transition: color 0.2s ease;
-}
-
-.participants-list li::before {
-  content: '•';
-  color: var(--primary-color);
-  margin-right: 8px;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
 }
 
 .participants-list li:hover {
   color: var(--text-primary);
+}
+
+.participant-email {
+  flex: 1;
+}
+
+.delete-participant {
+  background: #dc3545;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 4px 8px;
+  margin-left: 8px;
+  border-radius: 4px;
+  opacity: 0.9;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.delete-participant:hover {
+  opacity: 1;
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+.delete-participant:active {
+  transform: scale(0.95);
 }
 
 .no-participants {
